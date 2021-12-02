@@ -7,9 +7,11 @@ fn main() -> Result<(), std::io::Error> {
         .filter_map(|line| line.parse().ok())
         .collect();
 
+    // Part 1
     println!("{}", count_depth_increases(&measurements, 1));
+    // Part 2
     println!("{}", count_depth_increases(&measurements, 3));
-    
+
     Ok(())
 }
 
