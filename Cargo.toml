@@ -1,5 +1,6 @@
 [workspace]
 members = [
   "aoc-common",
-  "aoc1-sonar-sweep"
+  "aoc1-sonar-sweep",
+  "aoc2-dive",
 ]

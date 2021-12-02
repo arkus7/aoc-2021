@@ -12,3 +12,10 @@ version = "0.1.0"
 dependencies = [
  "aoc-common",
 ]
+
+[[package]]
+name = "aoc2-dive"
+version = "0.1.0"
+dependencies = [
+ "aoc-common",
+]
