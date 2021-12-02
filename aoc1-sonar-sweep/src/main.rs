@@ -6,8 +6,10 @@ fn main() -> Result<(), std::io::Error> {
         .split("\n")
         .filter_map(|line| line.parse().ok())
         .collect();
+
     println!("{}", count_depth_increases(&measurements, 1));
     println!("{}", count_depth_increases(&measurements, 3));
+    
     Ok(())
 }
 
