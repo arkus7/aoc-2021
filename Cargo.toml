@@ -1,4 +1,5 @@
 [workspace]
 members = [
   "aoc-common",
+  "aoc1-sonar-sweep"
 ]
