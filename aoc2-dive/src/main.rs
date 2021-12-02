@@ -20,6 +20,7 @@ enum CommandParseError {
 struct Position {
     horizontal: usize,
     depth: usize,
+    aim: usize,
 }
 
 impl FromStr for Command {
@@ -51,10 +52,11 @@ fn main() -> Result<(), std::io::Error> {
         .filter_map(|line| line.parse::<Command>().ok())
         .collect::<Vec<_>>();
 
-    let pos = calculate_position(&input);
+    let pos1 = calculate_position(&input);
+    println!("Part 1: {}", pos1.horizontal * pos1.depth);
 
-    println!("Part 1: {}", pos.horizontal * pos.depth);
-
+    let pos2 = calculate_position_aim(&input);
+    println!("Part 2: {}", pos2.horizontal * pos2.depth);
     Ok(())
 }
 
@@ -62,6 +64,7 @@ fn calculate_position(commands: &Vec<Command>) -> Position {
     let mut pos = Position {
         horizontal: 0,
         depth: 0,
+        aim: 0,
     };
 
     for command in commands {
@@ -69,6 +72,27 @@ fn calculate_position(commands: &Vec<Command>) -> Position {
             Command::Forward(val) => pos.horizontal += val,
             Command::Down(val) => pos.depth += val,
             Command::Up(val) => pos.depth -= val,
+        }
+    }
+
+    pos
+}
+
+fn calculate_position_aim(commands: &Vec<Command>) -> Position {
+    let mut pos = Position {
+        horizontal: 0,
+        depth: 0,
+        aim: 0,
+    };
+
+    for command in commands {
+        match command {
+            Command::Forward(val) => {
+                pos.horizontal += val;
+                pos.depth += pos.aim * val;
+            }
+            Command::Down(val) => pos.aim += val,
+            Command::Up(val) => pos.aim -= val,
         }
     }
 
@@ -133,7 +157,8 @@ mod calculation_tests {
             pos,
             Position {
                 horizontal: 0,
-                depth: 0
+                depth: 0,
+                aim: 0
             }
         );
     }
@@ -145,7 +170,8 @@ mod calculation_tests {
             pos,
             Position {
                 horizontal: 20,
-                depth: 0
+                depth: 0,
+                aim: 0
             }
         )
     }
@@ -157,7 +183,8 @@ mod calculation_tests {
             pos,
             Position {
                 horizontal: 0,
-                depth: 20
+                depth: 20,
+                aim: 0
             }
         )
     }
@@ -169,7 +196,78 @@ mod calculation_tests {
             pos,
             Position {
                 horizontal: 0,
-                depth: 80
+                depth: 80,
+                aim: 0
+            }
+        )
+    }
+}
+
+#[cfg(test)]
+mod calculation_with_aim_tests {
+    use crate::{calculate_position_aim, Command, Position};
+
+    #[test]
+    fn empty_vec() {
+        let pos = calculate_position_aim(&vec![]);
+        assert_eq!(
+            pos,
+            Position {
+                horizontal: 0,
+                depth: 0,
+                aim: 0
+            }
+        );
+    }
+
+    #[test]
+    fn move_forward() {
+        let pos = calculate_position_aim(&vec![Command::Forward(20)]);
+        assert_eq!(
+            pos,
+            Position {
+                horizontal: 20,
+                depth: 0,
+                aim: 0
+            }
+        )
+    }
+
+    #[test]
+    fn move_down() {
+        let pos = calculate_position_aim(&vec![Command::Down(20)]);
+        assert_eq!(
+            pos,
+            Position {
+                horizontal: 0,
+                depth: 0,
+                aim: 20
+            }
+        )
+    }
+
+    #[test]
+    fn move_down_and_up() {
+        let pos = calculate_position_aim(&vec![Command::Down(100), Command::Up(20)]);
+        assert_eq!(
+            pos,
+            Position {
+                horizontal: 0,
+                depth: 0,
+                aim: 80
+            }
+        )
+    }
+
+    #[test]
+    fn move_down_and_forward() {
+        let pos = calculate_position_aim(&vec![Command::Down(100), Command::Forward(20)]);
+        assert_eq!(
+            pos,
+            Position {
+                horizontal: 20,
+                depth: 20 * 100,
+                aim: 100,
             }
         )
     }
