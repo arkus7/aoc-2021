@@ -3,4 +3,5 @@ members = [
   "aoc-common",
   "aoc1-sonar-sweep",
   "aoc2-dive",
+  "aoc3-binary-diagnostic",
 ]
