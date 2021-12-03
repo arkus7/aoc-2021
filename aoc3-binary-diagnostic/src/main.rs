@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use aoc_common::read_input;
 
 fn main() -> std::io::Result<()> {
@@ -11,6 +9,7 @@ fn main() -> std::io::Result<()> {
         .collect::<Vec<_>>();
 
     solve_part_one(&lines);
+    solve_part_two(&lines);
 
     Ok(())
 }
@@ -55,4 +54,90 @@ fn solve_part_one(lines: &Vec<&str>) {
         epsilon_rate,
         gamma_rate * epsilon_rate
     );
+}
+
+fn solve_part_two(lines: &Vec<&str>) {
+    let oxygen_rating = find_oxygen_generator_rating(lines);
+    let co2_scrubber_rating = find_co2_scrubber_rating(lines);
+
+    println!(
+        "Oxygen: {}, Scrubber: {}, Answer: {}",
+        oxygen_rating,
+        co2_scrubber_rating,
+        oxygen_rating * &co2_scrubber_rating
+    );
+}
+
+fn find_oxygen_generator_rating(lines: &Vec<&str>) -> usize {
+    let mut input = lines.clone();
+    let mut i = 0;
+
+    while input.len() != 1 {
+        println!("Input len: {}", input.len());
+        let mut zeros = 0;
+        let mut ones = 0;
+
+        for &line in input.iter() {
+            match line.chars().nth(i).unwrap() {
+                '0' => zeros += 1,
+                '1' => ones += 1,
+                _ => {}
+            }
+        }
+
+        let most_common = {
+            if zeros > ones {
+                '0'
+            } else {
+                '1'
+            }
+        };
+
+        println!("Bit: {}, most common: {}", i, most_common);
+
+        input = input
+            .into_iter()
+            .filter(|rating| rating.chars().nth(i).unwrap() == most_common)
+            .collect::<Vec<&str>>();
+
+        i += 1;
+    }
+    return usize::from_str_radix(input.first().unwrap(), 2).unwrap();
+}
+
+fn find_co2_scrubber_rating(lines: &Vec<&str>) -> usize {
+    let mut input = lines.clone();
+    let mut i = 0;
+
+    while input.len() != 1 {
+        println!("Input len: {}", input.len());
+        let mut zeros = 0;
+        let mut ones = 0;
+
+        for &line in input.iter() {
+            match line.chars().nth(i).unwrap() {
+                '0' => zeros += 1,
+                '1' => ones += 1,
+                _ => {}
+            }
+        }
+
+        let least_common = {
+            if zeros <= ones {
+                '0'
+            } else {
+                '1'
+            }
+        };
+
+        println!("Bit: {}, least common: {}", i, least_common);
+
+        input = input
+            .into_iter()
+            .filter(|rating| rating.chars().nth(i).unwrap() == least_common)
+            .collect::<Vec<&str>>();
+
+        i += 1;
+    }
+    return usize::from_str_radix(input.first().unwrap(), 2).unwrap();
 }
