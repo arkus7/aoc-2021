@@ -48,7 +48,7 @@ impl FromStr for Command {
 
 fn main() -> Result<(), std::io::Error> {
     let input = read_input("aoc2-dive/input.txt")?
-        .split("\n")
+        .split('\n')
         .filter_map(|line| line.parse::<Command>().ok())
         .collect::<Vec<_>>();
 
@@ -60,7 +60,7 @@ fn main() -> Result<(), std::io::Error> {
     Ok(())
 }
 
-fn calculate_position(commands: &Vec<Command>) -> Position {
+fn calculate_position(commands: &[Command]) -> Position {
     let mut pos = Position {
         horizontal: 0,
         depth: 0,
@@ -78,7 +78,7 @@ fn calculate_position(commands: &Vec<Command>) -> Position {
     pos
 }
 
-fn calculate_position_aim(commands: &Vec<Command>) -> Position {
+fn calculate_position_aim(commands: &[Command]) -> Position {
     let mut pos = Position {
         horizontal: 0,
         depth: 0,

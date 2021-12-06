@@ -3,22 +3,22 @@ use aoc_common::read_input;
 fn main() -> Result<(), std::io::Error> {
     let input = read_input("aoc1-sonar-sweep/input.txt")?;
     let measurements = input
-        .split("\n")
+        .split('\n')
         .filter_map(|line| line.parse().ok())
-        .collect();
+        .collect::<Vec<usize>>();
 
     // Part 1
-    println!("{}", count_depth_increases(&measurements, 1));
+    println!("{}", count_depth_increases(&measurements[..], 1));
     // Part 2
-    println!("{}", count_depth_increases(&measurements, 3));
+    println!("{}", count_depth_increases(&measurements[..], 3));
 
     Ok(())
 }
 
-fn count_depth_increases(measurements: &Vec<usize>, window_size: usize) -> usize {
+fn count_depth_increases(measurements: &[usize], window_size: usize) -> usize {
     measurements
         .windows(window_size)
-        .map(|window| window.into_iter().sum())
+        .map(|window| window.iter().sum())
         .collect::<Vec<usize>>()
         .windows(2)
         .filter_map(|window| {

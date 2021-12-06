@@ -4,7 +4,7 @@ fn main() -> std::io::Result<()> {
     let input = read_input("aoc3-binary-diagnostic/input.txt")?;
 
     let lines = input
-        .split("\n")
+        .split('\n')
         .filter(|l| !l.is_empty())
         .collect::<Vec<_>>();
 
@@ -14,7 +14,7 @@ fn main() -> std::io::Result<()> {
     Ok(())
 }
 
-fn solve_part_one(lines: &Vec<&str>) {
+fn solve_part_one(lines: &[&str]) {
     let number_of_bits = lines.first().unwrap().len();
     let mut gamma_rate_str = String::with_capacity(number_of_bits);
 
@@ -56,7 +56,7 @@ fn solve_part_one(lines: &Vec<&str>) {
     );
 }
 
-fn solve_part_two(lines: &Vec<&str>) {
+fn solve_part_two(lines: &[&str]) {
     let oxygen_rating = find_oxygen_generator_rating(lines);
     let co2_scrubber_rating = find_co2_scrubber_rating(lines);
 
@@ -64,12 +64,12 @@ fn solve_part_two(lines: &Vec<&str>) {
         "Oxygen: {}, Scrubber: {}, Answer: {}",
         oxygen_rating,
         co2_scrubber_rating,
-        oxygen_rating * &co2_scrubber_rating
+        oxygen_rating * co2_scrubber_rating
     );
 }
 
-fn find_oxygen_generator_rating(lines: &Vec<&str>) -> usize {
-    let mut input = lines.clone();
+fn find_oxygen_generator_rating(lines: &[&str]) -> usize {
+    let mut input = lines.to_owned();
     let mut i = 0;
 
     while input.len() != 1 {
@@ -98,15 +98,15 @@ fn find_oxygen_generator_rating(lines: &Vec<&str>) -> usize {
         input = input
             .into_iter()
             .filter(|rating| rating.chars().nth(i).unwrap() == most_common)
-            .collect::<Vec<&str>>();
+            .collect();
 
         i += 1;
     }
     return usize::from_str_radix(input.first().unwrap(), 2).unwrap();
 }
 
-fn find_co2_scrubber_rating(lines: &Vec<&str>) -> usize {
-    let mut input = lines.clone();
+fn find_co2_scrubber_rating(lines: &[&str]) -> usize {
+    let mut input = lines.to_owned();
     let mut i = 0;
 
     while input.len() != 1 {
